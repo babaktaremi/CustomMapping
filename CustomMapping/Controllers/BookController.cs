@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CustomMapping.Service;
+using CustomMapping.Service.DataShaping;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CustomMapping.Controllers
@@ -19,11 +20,19 @@ namespace CustomMapping.Controllers
         }
 
         [HttpGet]
-        public IActionResult Get()
+        public IActionResult Get(string fields)
         {
             var model = _bookService.GetFirstBook();
 
-            return Ok(model);
+            if(string.IsNullOrEmpty(fields))
+                return Ok(model);
+
+            if (!model.HasFields(fields))
+                return BadRequest("Required fields does not exist");
+
+            var shapedData = model.ShapeData(fields);
+
+            return Ok(shapedData);
         }
     }
 }
