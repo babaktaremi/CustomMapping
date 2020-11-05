@@ -20,14 +20,23 @@ namespace CustomMapping.Service
         private List<Books> bookList = new List<Books>
         {
             new Books{Id = 1,Isbn = "ASD123",Name = "First Book",Writer = "Bob"},
-            new Books{Id = 1,Isbn = "ABC123",Name = "Second Book",Writer = "Bob"}
+            new Books{Id = 2,Isbn = "ABC123",Name = "Second Book",Writer = "Bob"}
         };
 
 
-        public BookDto GetFirstBook()
+        public Books GetFirstBook()
         {
-            var book = _mapper.Map<Books, BookDto>(bookList.FirstOrDefault());
-            return book;
+            return bookList.FirstOrDefault();
+        }
+
+        public Books GetBookById(int id)
+        {
+            return bookList.FirstOrDefault(b => b.Id == id);
+        }
+
+        public List<Books> GetAllBooks()
+        {
+            return bookList;
         }
     }
 }
